@@ -1,9 +1,8 @@
 package com.niki.pjd.service;
 
 import com.niki.pjd.model.InterviewQuestion;
-import com.niki.pjd.dto.InterviewQuestionDto;
-import com.niki.pjd.service.mappers.InterviewQuestionMapper;
-import com.niki.pjd.dao.InterviewQuestionStorage;
+import com.niki.pjd.repository.InterviewQuestionRepository;
+import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,24 +10,23 @@ import java.util.List;
 @Service
 public class InterviewQuestionService {
 
-    private final InterviewQuestionMapper interviewQuestionMapper;
-    private final InterviewQuestionStorage storage;
+    private final InterviewQuestionRepository repository;
 
-    public InterviewQuestionService(InterviewQuestionMapper interviewQuestionMapper,
-                                    InterviewQuestionStorage storage) {
-        this.interviewQuestionMapper = interviewQuestionMapper;
-        this.storage = storage;
+    public InterviewQuestionService(InterviewQuestionRepository repository) {
+        this.repository = repository;
     }
 
-    public InterviewQuestion create(InterviewQuestionDto questionDto) {
-        InterviewQuestion interviewQuestion = interviewQuestionMapper.toInterviewQuestion(questionDto);
-        return storage.createInterviewQuestion(interviewQuestion);
+    public InterviewQuestion create(InterviewQuestion question) {
+        return repository.save(question);
     }
 
-    public List<InterviewQuestionDto> getAll() {
-        List<InterviewQuestion> questions = storage.getAll();
-        return questions.stream()
-                .map(interviewQuestionMapper::toInterviewQuestionDto)
-                .toList();
+    public List<InterviewQuestion> getAll() {
+        return repository.findAll();
+    }
+
+    @PostConstruct
+    public void checkData() {
+        System.out.println("Данные в БД:");
+        repository.findAll().forEach(System.out::println);
     }
 }

@@ -1,9 +1,8 @@
 package com.niki.pjd.cli;
 
 import com.niki.pjd.controller.InterviewQuestionController;
-import com.niki.pjd.dto.InterviewQuestionDto;
+import com.niki.pjd.model.InterviewQuestion;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Scanner;
@@ -49,14 +48,16 @@ public class CommandLineInterface {
                 input = cliCommandParsingResult.cliCommand();
 
                 switch (input) {
-                    case CliCommands.LIST ->
-                            printAllInterviewQuestions(interviewQuestionController.getAllInterviewQuestions());
-                    case CliCommands.ADD -> addInterviewQuestion(scanner);
+                    case (CliCommands.LIST) ->
+                        printAllInterviewQuestions(interviewQuestionController.getAllInterviewQuestions());
+                    case (CliCommands.ADD) ->
+                        addInterviewQuestion(scanner);
+                    default -> throw new IllegalStateException("Unexpected value: " + input);
                 }
             }
         } while (!input.equals(CliCommands.EXIT));
 
-        List<InterviewQuestionDto> allInterviewQuestions = interviewQuestionController.getAllInterviewQuestions();
+        List<InterviewQuestion> allInterviewQuestions = interviewQuestionController.getAllInterviewQuestions();
         allInterviewQuestions.forEach(System.out::println);
     }
 
@@ -73,14 +74,16 @@ public class CommandLineInterface {
         if (answer.equalsIgnoreCase(CliCommands.MENU.getLowerCaseName())) {
             return;
         }
-        interviewQuestionController.createInterviewQuestion(new InterviewQuestionDto(question, answer));
+        interviewQuestionController.createInterviewQuestion(
+                new InterviewQuestion(question, answer));
+        System.out.println("INFO: questions are loaded" + System.lineSeparator());
     }
 
-    private static void printAllInterviewQuestions(List<InterviewQuestionDto> questionDtos) {
-        System.out.println(questionDtos.size() + " вопросов доступно" + System.lineSeparator());
+    private static void printAllInterviewQuestions(List<InterviewQuestion> questions) {
+        System.out.println(questions.size() + " вопросов доступно" + System.lineSeparator());
 
         int questionNumber = 1;
-        for (InterviewQuestionDto question : questionDtos) {
+        for (InterviewQuestion question : questions) {
             System.out.println(questionNumber + " " + question + System.lineSeparator());
             questionNumber++;
         }

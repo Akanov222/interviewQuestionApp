@@ -1,7 +1,6 @@
 package com.niki.pjd.controller;
 
 import com.niki.pjd.model.InterviewQuestion;
-import com.niki.pjd.dto.InterviewQuestionDto;
 import com.niki.pjd.service.InterviewQuestionService;
 import org.springframework.stereotype.Component;
 
@@ -16,11 +15,11 @@ public class InterviewQuestionController {
         this.service = service;
     }
 
-    public InterviewQuestion createInterviewQuestion(InterviewQuestionDto questionDto) {
-        return service.create(questionDto);
+    public InterviewQuestion createInterviewQuestion(InterviewQuestion question) {
+        return service.create(question);
     }
 
-    public List<InterviewQuestionDto> getAllInterviewQuestions() {
+    public List<InterviewQuestion> getAllInterviewQuestions() {
         return service.getAll();
     }
 }

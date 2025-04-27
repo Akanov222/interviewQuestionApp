@@ -1,8 +1,16 @@
 package com.niki.pjd.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
 import java.util.Objects;
 
+@Entity
 public class InterviewQuestion {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String question;
     private String answer;
@@ -15,6 +23,9 @@ public class InterviewQuestion {
 
     public InterviewQuestion(String question, String answer) {
         this(null, question, answer);
+    }
+
+    public InterviewQuestion() {
     }
 
     public Long getId() {

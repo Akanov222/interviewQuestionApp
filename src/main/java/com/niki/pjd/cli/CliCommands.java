@@ -1,7 +1,5 @@
 package com.niki.pjd.cli;
 
-import java.util.List;
-
 public enum CliCommands {
     MENU("menu"),
     LIST("list"),
